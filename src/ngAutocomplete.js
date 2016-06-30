@@ -6,7 +6,7 @@
  *
  * Usage:
  *
- * <input type="text"  ng-autocomplete ng-model="autocomplete" options="options" details="details custom-locations="locations" geometry="geometry"/>
+ * <input type="text"  ng-autocomplete ng-model="autocomplete" options="options" details="details extra-locations="locations"/>
  *
  * + ng-model - autocomplete textbox value
  *
@@ -18,9 +18,7 @@
  *       + bounds: bounds,     Google maps LatLngBounds Object, biases results to bounds, but may return results outside these bounds
  *       + country: country    String, ISO 3166-1 Alpha-2 compatible country code. examples; 'ca', 'us', 'gb'
  *       + watchEnter:         Boolean, true; on Enter select top autocomplete result. false(default); enter ends autocomplete
- * + custom-locations - array of custom locations to be displayed under google suggested results
- *
- * + geometry - object has longitude and latitude properties from google places api
+ * + extra-locations - array of extra locations to be displayed under google suggested results
  *
  * example:
  *
@@ -38,8 +36,7 @@ angular.module( "ngAutocomplete", [])
                 ngModel: '=',
                 options: '=?',
                 details: '=?',
-                customLocations: '=',
-                geometry: '='
+                extraLocations: '='
             },
 
             link: function(scope, element, attrs, controller) {
@@ -95,12 +92,6 @@ angular.module( "ngAutocomplete", [])
                             scope.$apply(function () {
 
                                 scope.details = result;
-				if (angular.isDefined(scope.geometry)) {
-                                    scope.geometry = {
-                                        'lat': result.geometry.location.lat(),
-                                        'lng': result.geometry.location.lng()
-                                    }
-                                }
                                 controller.$setViewValue(element.val());
                             });
                         }
@@ -114,7 +105,7 @@ angular.module( "ngAutocomplete", [])
 
                 let locationInput = angular.element(document.getElementById('locations'))
                 locationInput.bind('keyup keydown focus', function() {
-                    if (scope.customLocations) {
+                    if (scope.extraLocations) {
                         let extraLocations = document.getElementById("extraLocations")
                         if (extraLocations) {
                             angular.element(extraLocations).remove()
@@ -126,13 +117,13 @@ angular.module( "ngAutocomplete", [])
                             googleTitle = null
                         }
                         let elementsHtml = '<div id="extraLocations"><hr/><div class="job-google-place-title">Your job locations</div><div id="defaultLocations">'
-                        scope.customLocations.forEach(function (location) {
+                        scope.extraLocations.forEach(function (location) {
                             let id = location.city + ', ' + location.state
                             elementsHtml += '<div id="' + id +'">' + location.city + ', ' + location.state + '</div>'
                         })
                         elementsHtml += '</div></div>'
                         let container = document.getElementsByClassName("pac-container")[document.getElementsByClassName("pac-container").length-1]
-                        let containerHeight = 230 + scope.customLocations.length * 40
+                        let containerHeight = 230 + scope.extraLocations.length * 40
                         container.style.height = containerHeight + 'px'
                         if (container.className.indexOf('location-filter-container') < 0) {
                             container.className += " location-filter-container"
@@ -147,7 +138,7 @@ angular.module( "ngAutocomplete", [])
                         if (defaultLocations) {
                             defaultLocations.bind('mousedown', function(event) {
                                 document.getElementById('locations').value = event.target.id
-                                // should set scope.geometry here once jobLocations have saved lat and lng
+				angular.element(document.getElementById('locations')).triggerHandler('input')
                             })
                         }
                     }
