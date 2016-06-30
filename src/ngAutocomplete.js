@@ -138,7 +138,10 @@ angular.module( "ngAutocomplete", [])
                         if (defaultLocations) {
                             defaultLocations.bind('mousedown', function(event) {
                                 document.getElementById('locations').value = event.target.id
-				angular.element(document.getElementById('locations')).triggerHandler('input')
+				let scope = angular.element(document.getElementById('locations')).scope()
+				scope.$apply(function() {
+				    scope.locations = event.target.id
+                                })
                             })
                         }
                     }
