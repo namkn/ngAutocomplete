@@ -103,27 +103,27 @@ angular.module( "ngAutocomplete", [])
                     }
                 })
 
-                let locationInput = angular.element(document.getElementById('locations'))
+                var locationInput = angular.element(document.getElementById('locations'))
                 locationInput.bind('keyup keydown focus', function() {
                     if (scope.extraLocations) {
-                        let extraLocations = document.getElementById("extraLocations")
+                        var extraLocations = document.getElementById("extraLocations")
                         if (extraLocations) {
                             angular.element(extraLocations).remove()
                             extraLocations = null
                         }
-                        let googleTitle = document.getElementById('google-suggestion-title')
+                        var googleTitle = document.getElementById('google-suggestion-title')
                         if (googleTitle) {
                             angular.element(googleTitle).remove()
                             googleTitle = null
                         }
-                        let elementsHtml = '<div id="extraLocations"><hr/><div class="job-google-place-title">Your job locations</div><div id="defaultLocations">'
+                        var elementsHtml = '<div id="extraLocations"><hr/><div class="job-google-place-title">Your job locations</div><div id="defaultLocations">'
                         scope.extraLocations.forEach(function (location) {
-                            let id = location.city + ', ' + location.state
+                            var id = location.city + ', ' + location.state
                             elementsHtml += '<div id="' + id +'">' + location.city + ', ' + location.state + '</div>'
                         })
                         elementsHtml += '</div></div>'
-                        let container = document.getElementsByClassName("pac-container")[document.getElementsByClassName("pac-container").length-1]
-                        let containerHeight = 230 + scope.extraLocations.length * 40
+                        var container = document.getElementsByClassName("pac-container")[document.getElementsByClassName("pac-container").length-1]
+                        var containerHeight = 230 + scope.extraLocations.length * 40
                         container.style.height = containerHeight + 'px'
                         if (container.className.indexOf('location-filter-container') < 0) {
                             container.className += " location-filter-container"
@@ -134,11 +134,11 @@ angular.module( "ngAutocomplete", [])
                         if (!googleTitle) {
                             angular.element(container).append($compile(angular.element('<div id="google-suggestion-title" class="job-google-place-title">Google Suggestions</div>'))(scope))
                         }
-                        let defaultLocations = angular.element(document.getElementById("defaultLocations"))
+                        var defaultLocations = angular.element(document.getElementById("defaultLocations"))
                         if (defaultLocations) {
                             defaultLocations.bind('mousedown', function(event) {
                                 document.getElementById('locations').value = event.target.id
-				let scope = angular.element(document.getElementById('locations')).scope()
+				var scope = angular.element(document.getElementById('locations')).scope()
 				scope.$apply(function() {
 				    scope.locations = event.target.id
                                 })
