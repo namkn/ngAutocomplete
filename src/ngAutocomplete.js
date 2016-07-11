@@ -119,11 +119,11 @@ angular.module( "ngAutocomplete", [])
                         var elementsHtml = '<div id="extraLocations"><hr/><div class="job-google-place-title">Your job locations</div><div id="defaultLocations">'
                         scope.extraLocations.forEach(function (location) {
                             var id = location.city + ', ' + location.state
-                            elementsHtml += '<div id="' + id +'">' + location.city + ', ' + location.state + '</div>'
+                            elementsHtml += '<div class="pac-item" id="' + id +'">' + location.city + ', ' + location.state + '</div>'
                         })
                         elementsHtml += '</div></div>'
                         var container = document.getElementsByClassName("pac-container")[document.getElementsByClassName("pac-container").length-1]
-                        var containerHeight = 230 + scope.extraLocations.length * 40
+                        var containerHeight = 250 + scope.extraLocations.length * 40
                         container.style.height = containerHeight + 'px'
                         if (container.className.indexOf('location-filter-container') < 0) {
                             container.className += " location-filter-container"
