@@ -116,7 +116,7 @@ angular.module( "ngAutocomplete", [])
                             angular.element(googleTitle).remove()
                             googleTitle = null
                         }
-                        var elementsHtml = '<div id="extraLocations"><hr/><div class="job-google-place-title">Your job locations</div><div id="defaultLocations">'
+                        var elementsHtml = '<div id="extraLocations"><div class="job-google-place-title">Your job locations</div><div id="defaultLocations">'
                         scope.extraLocations.forEach(function (location) {
                             var id = location.city + ', ' + location.state
                             elementsHtml += '<div class="pac-item" id="' + id +'">' + location.city + ', ' + location.state + '</div>'
@@ -138,9 +138,9 @@ angular.module( "ngAutocomplete", [])
                         if (defaultLocations) {
                             defaultLocations.bind('mousedown', function(event) {
                                 document.getElementById('locations').value = event.target.id
-				var scope = angular.element(document.getElementById('locations')).scope()
-				scope.$apply(function() {
-				    scope.locations = event.target.id
+                                var scope = angular.element(document.getElementById('locations')).scope()
+                                scope.$apply(function() {
+                                    scope.locations = event.target.id
                                 })
                             })
                         }
