@@ -104,7 +104,7 @@ angular.module( "ngAutocomplete", [])
                 })
 
                 var locationInput = angular.element(document.getElementById('locations'))
-                locationInput.bind('keyup keydown focus', function() {
+                locationInput.bind('keyup keydown focus', function($event) {
                     if (scope.extraLocations) {
                         var extraLocations = document.getElementById("extraLocations")
                         if (extraLocations) {
@@ -144,6 +144,9 @@ angular.module( "ngAutocomplete", [])
                                 })
                             })
                         }
+                    }
+                    if ($event.keyCode === 13) { //Prevent submitting form on enter
+                        $event.preventDefault()
                     }
                 })
 
