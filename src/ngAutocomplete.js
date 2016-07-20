@@ -118,8 +118,8 @@ angular.module( "ngAutocomplete", [])
                         }
                         var elementsHtml = '<div id="extraLocations"><div class="job-google-place-title">Your job locations</div><div id="defaultLocations">'
                         scope.extraLocations.forEach(function (location) {
-                            var id = location.city + ', ' + location.state
-                            elementsHtml += '<div class="pac-item" id="' + id +'">' + location.city + ', ' + location.state + '</div>'
+                            var id = location.city ? location.city + ', ' + location.state : location.state
+			    elementsHtml += '<div class="pac-item" id="' + id +'">' + id + '</div>'
                         })
                         elementsHtml += '</div></div>'
                         var container = document.getElementsByClassName("pac-container")[document.getElementsByClassName("pac-container").length-1]
