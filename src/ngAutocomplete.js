@@ -43,7 +43,7 @@ angular.module( "ngAutocomplete", [])
                 //options for autocomplete
                 var opts
                 var watchEnter = false
-                let watchFocusOut = false
+                var watchFocusOut = false
                 //convert options provided to opts
                 var initOpts = function() {
 
@@ -111,7 +111,7 @@ angular.module( "ngAutocomplete", [])
 
                 var locationInput = angular.element(document.getElementById('locations'))
                 locationInput.bind('focusout', function() {
-                    let input = element.val()
+                    var input = element.val()
                     if (input.length < 3) {
                         controller.$setViewValue('')
                         element.val('')
