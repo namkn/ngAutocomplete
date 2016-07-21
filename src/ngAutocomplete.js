@@ -43,6 +43,7 @@ angular.module( "ngAutocomplete", [])
                 //options for autocomplete
                 var opts
                 var watchEnter = false
+                let watchFocusOut = false
                 //convert options provided to opts
                 var initOpts = function() {
 
@@ -53,6 +54,11 @@ angular.module( "ngAutocomplete", [])
                             watchEnter = false
                         } else {
                             watchEnter = true
+                        }
+                        if (scope.options.watchFocusOut !== true) {
+                            watchFocusOut = false
+                        } else {
+                            watchFocusOut = true
                         }
 
                         if (scope.options.types) {
@@ -104,6 +110,15 @@ angular.module( "ngAutocomplete", [])
                 })
 
                 var locationInput = angular.element(document.getElementById('locations'))
+                locationInput.bind('focusout', function() {
+                    let input = element.val()
+                    if (input.length < 3) {
+                        controller.$setViewValue('')
+                        element.val('')
+                    } else if (watchFocusOut) {
+                        getPlace({name: input})
+                    }
+                })
                 locationInput.bind('keyup keydown focus', function($event) {
                     if (scope.extraLocations) {
                         var extraLocations = document.getElementById("extraLocations")
@@ -181,13 +196,6 @@ angular.module( "ngAutocomplete", [])
                                                     element.val(detailsResult.formatted_address);
 
                                                     scope.details = detailsResult;
-
-                                                    //on focusout the value reverts, need to set it again.
-                                                    var watchFocusOut = element.on('focusout', function(event) {
-                                                        element.val(detailsResult.formatted_address);
-                                                        element.unbind('focusout')
-                                                    })
-
                                                 });
                                             }
                                         }
