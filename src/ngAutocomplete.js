@@ -29,7 +29,7 @@
  **/
 
 angular.module( "ngAutocomplete", [])
-    .directive('ngAutocomplete', ['$compile', function($compile) {
+    .directive('ngAutocomplete', ['$compile', '$timeout', function($compile, $timeout) {
         return {
             require: 'ngModel',
             scope: {
@@ -90,7 +90,10 @@ angular.module( "ngAutocomplete", [])
                 if (scope.gPlace == undefined) {
                     scope.gPlace = new google.maps.places.Autocomplete(element[0], {})
                 }
+
+                var placeChanged = false
                 google.maps.event.addListener(scope.gPlace, 'place_changed', function () {
+                    placeChanged = true
                     var result = scope.gPlace.getPlace();
                     if (result !== undefined) {
                         if (result.address_components !== undefined) {
@@ -111,13 +114,18 @@ angular.module( "ngAutocomplete", [])
 
                 var locationInput = angular.element(document.getElementById('locations'))
                 locationInput.bind('focusout', function() {
-                    var input = element.val()
-                    if (input.length < 3) {
-                        controller.$setViewValue('')
-                        element.val('')
-                    } else if (watchFocusOut) {
-                        getPlace({name: input})
-                    }
+                    $timeout(function () {
+                        if (!placeChanged) {
+                            var input = element.val()
+                            if (input.length < 3) {
+                                controller.$setViewValue('')
+                                element.val('')
+                            } else if (watchFocusOut) {
+                                getPlace({name: input})
+                            } 
+                        }
+                        placeChanged = false        
+                    }, 500)
                 })
                 locationInput.bind('keyup keydown focus', function($event) {
                     if (scope.extraLocations) {
